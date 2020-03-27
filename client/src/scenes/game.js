@@ -29,7 +29,7 @@ export default class Game extends Phaser.Scene {
     this.allCards = [];
     this.players = [];
 
-    this.socket = io("http://localhost:3003");
+    this.socket = io("https://coronnie.herokuapp.com");
 
     this.socket.on("connect", function() {
       console.log("Connected with id: " + self.socket.id);
