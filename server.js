@@ -4,6 +4,8 @@ const path = require("path");
 
 const app = express();
 
+const port = process.env.PORT || 3003;
+
 app.use(express.static(path.join(__dirname, "client", "dist")));
 
 app.use(function(req, res, next) {
@@ -77,6 +79,6 @@ io.on("connection", function(socket) {
   });
 });
 
-server.listen(3003, function() {
+server.listen(port, function() {
   console.log("Server started!");
 });
