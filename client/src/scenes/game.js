@@ -168,7 +168,6 @@ export default class Game extends Phaser.Scene {
         const player = self.players.find(player => player.id === playerId);
         let playerName;
         if (player) playerName = player.name;
-        console.log({ playerName });
         let card = new Card(self);
         card
           .render(
@@ -186,7 +185,8 @@ export default class Game extends Phaser.Scene {
           )
           .setFontSize(14)
           .setFontFamily("Trebuchet MS")
-          .setColor("#cccccc");
+          .setColor("#cccccc")
+          .setName(playerName);
       }
     });
 
@@ -212,6 +212,12 @@ export default class Game extends Phaser.Scene {
         const cardObject = self.children.getByName(sprite);
         if (cardObject) {
           cardObject.destroy();
+        }
+      });
+      self.players.forEach(player => {
+        const name = self.children.getByName(player.name);
+        if (name) {
+          name.destroy();
         }
       });
       self.cardsPlayed = [];
