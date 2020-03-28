@@ -145,19 +145,15 @@ export default class Game extends Phaser.Scene {
     this.socket.on("dealCards", function(hand) {
       self.dealer.dealCards(hand);
       self.allCards = [...self.allCards, ...hand];
+      self.dropZone.data.values.cards = [];
       // self.dealText.disableInteractive();
     });
 
     this.socket.on("trumps", function(sprite) {
       self.allCards.push(sprite);
-      console.log(self.allCards);
       let card = new Card(self);
       card
-        .render(
-          self.dropZone.x - 450 + self.dropZone.data.values.cards.length * 50,
-          self.dropZone.y,
-          sprite
-        )
+        .render(self.dropZone.x - 450, self.dropZone.y, sprite)
         .setName(sprite)
         .disableInteractive();
     });
@@ -200,18 +196,28 @@ export default class Game extends Phaser.Scene {
 
     this.socket.on("trickClaimed", function() {
       self.cardsPlayed.forEach(sprite => {
-        self.children.getByName(sprite).destroy();
+        const cardObject = self.children.getByName(sprite);
+        if (cardObject) {
+          cardObject.destroy();
+        }
       });
       self.cardsPlayed = [];
+      self.dropZone.data.values.cards = [];
     });
 
     this.socket.on("redeal", function() {
       self.allCards.forEach(sprite => {
-        self.children.getByName(sprite).destroy();
+        const cardObject = self.children.getByName(sprite);
+        if (cardObject) {
+          cardObject.destroy();
+        }
       });
       self.cardsPlayed = [];
       self.cardsPlayed.forEach(sprite => {
-        self.children.getByName(sprite).destroy();
+        const cardObject = self.children.getByName(sprite);
+        if (cardObject) {
+          cardObject.destroy();
+        }
       });
       self.cardsPlayed = [];
     });
