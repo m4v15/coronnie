@@ -38,6 +38,7 @@ io.on("connection", function(socket) {
     players.forEach(player => {
       const hand = dealtCards.playerCards.shift();
       io.to(`${player.id}`).emit("dealCards", hand);
+      console.log(player.name + " : " + hand);
     });
     io.emit("trumps", dealtCards.trumps);
   });
