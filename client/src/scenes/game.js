@@ -90,9 +90,10 @@ export default class Game extends Phaser.Scene {
 
     this.input.on("drop", function(pointer, gameObject, dropZone) {
       let sprite = gameObject.texture.key;
-      dropZone.data.values.cards.push(sprite);
-      gameObject.x = dropZone.x - 350 + dropZone.data.values.cards.length * 50;
-      gameObject.y = dropZone.y;
+      self.dropZone.data.values.cards.push(sprite);
+      gameObject.x =
+        self.dropZone.x - 350 + self.dropZone.data.values.cards.length * 90;
+      gameObject.y = self.dropZone.y;
       gameObject.disableInteractive();
       self.socket.emit("cardPlayed", gameObject, self.player.id);
 
@@ -164,16 +165,28 @@ export default class Game extends Phaser.Scene {
       self.allCards.push(sprite);
       if (playerId !== self.player.id) {
         self.dropZone.data.values.cards.push(sprite);
-        console.log(self.dropZone);
+        const player = self.players.find(player => player.id === playerId);
+        let playerName;
+        if (player) playerName = player.name;
+        console.log({ playerName });
         let card = new Card(self);
         card
           .render(
-            self.dropZone.x - 350 + self.dropZone.data.values.cards.length * 50,
+            self.dropZone.x - 350 + self.dropZone.data.values.cards.length * 90,
             self.dropZone.y,
             sprite
           )
           .setName(sprite)
           .disableInteractive();
+        self.add
+          .text(
+            self.dropZone.x - 400 + self.dropZone.data.values.cards.length * 90,
+            self.dropZone.y - 120,
+            [playerName]
+          )
+          .setFontSize(14)
+          .setFontFamily("Trebuchet MS")
+          .setColor("#cccccc");
       }
     });
 
