@@ -18,9 +18,17 @@ const deal = (cards, players) => {
       hand.push(newCard);
     });
   }
+
+  const hands = playerCards.map(hand => {
+    hand
+      .sort()
+      .sort((a, b) => a.charCodeAt(a.length - 1) - b.charCodeAt(b.length - 1));
+    return hand;
+  });
+
   const trumps = shuffled.shift();
   return {
-    playerCards,
+    playerCards: hands,
     trumps,
     remaining: shuffled
   };
